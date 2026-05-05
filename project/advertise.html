@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="warm" data-screen-label="Advertise">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advertise on ahmedabad.blog — Get Featured</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=JetBrains+Mono:wght@400;500;700&family=Hind+Vadodara:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+.adv-hero {
+  padding: 80px 0 64px;
+  border-bottom: 1px solid var(--rule);
+}
+.adv-hero h1 {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: clamp(64px, 9vw, 132px);
+  letter-spacing: -0.045em;
+  line-height: 0.88;
+  text-wrap: balance;
+  margin-bottom: 24px;
+}
+.adv-hero h1 em {
+  font-family: 'Newsreader', serif;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--accent);
+}
+.adv-hero .lede { max-width: 800px; }
+
+.adv-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border: 1px solid var(--rule);
+  margin-top: 48px;
+}
+.adv-stats .stat {
+  padding: 24px;
+  border-right: 1px solid var(--rule);
+}
+.adv-stats .stat:last-child { border-right: none; }
+.adv-stats .stat .num {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: 48px;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+.adv-stats .stat .num .accent { color: var(--accent); }
+.adv-stats .stat .l {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  margin-top: 6px;
+}
+
+/* Pricing */
+.pricing {
+  padding: 72px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 48px;
+}
+.tier {
+  border: 1.5px solid var(--ink);
+  background: var(--paper);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.tier.popular {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+.tier.popular .tier-name,
+.tier.popular .tier-price,
+.tier.popular .tier-feature { color: var(--paper); }
+.tier.popular .tier-tag {
+  position: absolute;
+  top: -14px;
+  left: 24px;
+  background: var(--accent);
+  color: var(--paper);
+  padding: 6px 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.tier-name {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  letter-spacing: -0.025em;
+  line-height: 1;
+}
+.tier-sub {
+  font-family: 'Newsreader', serif;
+  font-style: italic;
+  font-size: 16px;
+  margin-top: 6px;
+  opacity: 0.75;
+}
+.tier-price {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: 56px;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin: 28px 0 4px;
+}
+.tier-price .small {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-left: 6px;
+  opacity: 0.7;
+}
+.tier-features {
+  list-style: none;
+  margin: 24px 0;
+  flex: 1;
+}
+.tier-feature {
+  font-family: 'Newsreader', serif;
+  font-size: 16px;
+  line-height: 1.45;
+  padding: 10px 0;
+  border-bottom: 1px solid currentColor;
+  border-color: var(--rule);
+  display: flex;
+  align-items: start;
+  gap: 10px;
+}
+.tier.popular .tier-feature { border-bottom-color: rgba(245,240,230,0.2); }
+.tier-feature::before {
+  content: "✓";
+  color: var(--accent);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.tier-feature.dim { opacity: 0.4; }
+.tier-feature.dim::before { content: "—"; }
+
+.tier .btn { width: 100%; justify-content: center; }
+
+/* Lead gen pricing */
+.leadgen-block {
+  padding: 72px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.leadgen-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 64px;
+  margin-top: 32px;
+  align-items: start;
+}
+
+.lead-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.lead-table th, .lead-table td {
+  padding: 16px;
+  border-bottom: 1px solid var(--rule);
+  text-align: left;
+  font-family: 'Newsreader', serif;
+  font-size: 16px;
+}
+.lead-table th {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  font-weight: 500;
+  border-bottom: 2px solid var(--ink);
+}
+.lead-table td.price {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.02em;
+  text-align: right;
+}
+
+/* Claim section */
+.claim-section {
+  padding: 72px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.claim-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  margin-top: 32px;
+}
+
+.claim-form {
+  background: var(--paper-2);
+  padding: 32px;
+  border: 1.5px solid var(--ink);
+}
+.claim-form .field {
+  margin-bottom: 20px;
+}
+.claim-form label {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: var(--ink-2);
+}
+.claim-form input,
+.claim-form select,
+.claim-form textarea {
+  width: 100%;
+  border: none;
+  border-bottom: 1.5px solid var(--ink);
+  background: transparent;
+  padding: 10px 0;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ink);
+  outline: none;
+}
+.claim-form input:focus,
+.claim-form select:focus,
+.claim-form textarea:focus { border-color: var(--accent); }
+.claim-form textarea {
+  font-family: 'Newsreader', serif;
+  font-weight: 400;
+  font-size: 16px;
+  resize: vertical;
+  min-height: 80px;
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.step {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+.step .num {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: 56px;
+  letter-spacing: -0.04em;
+  line-height: 0.85;
+  color: var(--accent);
+}
+.step h4 {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+.step p {
+  font-family: 'Newsreader', serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+/* FAQ */
+.faq-section {
+  padding: 72px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.faq-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px 64px;
+  margin-top: 32px;
+}
+.faq-item h4 {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-bottom: 10px;
+  text-wrap: balance;
+}
+.faq-item p {
+  font-family: 'Newsreader', serif;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+/* Testimonial */
+.testimonial-strip {
+  background: var(--paper-2);
+  padding: 64px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.testimonial-strip blockquote {
+  font-family: 'Newsreader', serif;
+  font-style: italic;
+  font-size: clamp(28px, 3.5vw, 44px);
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  max-width: 1100px;
+  text-wrap: balance;
+}
+.testimonial-strip blockquote::before {
+  content: "“";
+  font-size: 1.4em;
+  color: var(--accent);
+  font-style: normal;
+  margin-right: 4px;
+  line-height: 0;
+  vertical-align: -0.2em;
+}
+.testimonial-strip footer {
+  margin-top: 24px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  font-weight: 500;
+}
+
+@media (max-width: 1024px) {
+  .pricing-grid { grid-template-columns: 1fr; gap: 16px; max-width: 560px; }
+  .leadgen-grid { grid-template-columns: 1fr; gap: 40px; }
+  .claim-grid { grid-template-columns: 1fr; gap: 40px; }
+  .faq-grid { grid-template-columns: 1fr; gap: 28px; }
+  .adv-stats { grid-template-columns: 1fr 1fr; }
+  .adv-stats .stat:nth-child(2) { border-right: none; }
+  .adv-stats .stat:nth-child(1), .adv-stats .stat:nth-child(2) { border-bottom: 1px solid var(--rule); }
+}
+@media (max-width: 820px) {
+  .adv-hero { padding: 48px 0 40px; }
+  .pricing, .leadgen-block, .claim-section, .faq-section { padding: 48px 0; }
+  .adv-stats .stat { padding: 18px; }
+  .adv-stats .stat .num { font-size: 36px; }
+  .tier { padding: 24px; }
+  .tier-price { font-size: 44px; }
+  .lead-table th, .lead-table td { padding: 12px 8px; font-size: 14px; }
+  .lead-table td.price { font-size: 16px; }
+  .step { grid-template-columns: 48px 1fr; gap: 14px; }
+  .step .num { font-size: 42px; }
+  .step h4 { font-size: 19px; }
+  .testimonial-strip { padding: 48px 0; }
+  .claim-form { padding: 24px; }
+  .claim-form input, .claim-form select { font-size: 16px; }
+}
+@media (max-width: 520px) {
+  .adv-stats { grid-template-columns: 1fr; }
+  .adv-stats .stat { border-right: none; border-bottom: 1px solid var(--rule); }
+  .adv-stats .stat:last-child { border-bottom: none; }
+}
+</style>
+</head>
+<body>
+
+<div id="masthead-mount"></div>
+
+<main>
+  <section class="adv-hero">
+    <div class="container-wide">
+      <div class="hero-eyebrow">
+        <span class="pip"></span>
+        <span class="meta">For Businesses · Get listed, get found, get leads</span>
+      </div>
+      <h1>Get found by people<br>actually <em>looking</em><br>for what you sell.</h1>
+      <p class="lede">42,000 readers a month, all in Ahmedabad, all already searching for cafés, gyms, agencies, doctors, designers. We don't sell rankings — we sell visibility, leads, and trust. Pick what works for you.</p>
+
+      <div class="adv-stats">
+        <div class="stat">
+          <div class="num">42<span class="accent">k</span></div>
+          <div class="l">Monthly readers</div>
+        </div>
+        <div class="stat">
+          <div class="num">87<span class="accent">%</span></div>
+          <div class="l">From Ahmedabad</div>
+        </div>
+        <div class="stat">
+          <div class="num">4.2<span class="accent">×</span></div>
+          <div class="l">Avg. listing CTR</div>
+        </div>
+        <div class="stat">
+          <div class="num">₹312</div>
+          <div class="l">Avg. cost / lead</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="pricing" id="rates">
+    <div class="container-wide">
+      <div class="section-head" style="padding-top: 0">
+        <div class="left">
+          <div class="eyebrow">§ Featured Listings</div>
+          <h2>Three plans. <em>Cancel anytime.</em></h2>
+        </div>
+        <div class="right">All prices monthly · GST extra</div>
+      </div>
+
+      <div class="pricing-grid">
+        <div class="tier">
+          <div class="tier-name">Verified</div>
+          <div class="tier-sub">For businesses already listed by us</div>
+          <div class="tier-price">₹0<span class="small">/ free forever</span></div>
+          <ul class="tier-features">
+            <li class="tier-feature">Claim your free listing</li>
+            <li class="tier-feature">Add hours, photos, contact</li>
+            <li class="tier-feature">Respond to reviews</li>
+            <li class="tier-feature dim">No featured placement</li>
+            <li class="tier-feature dim">No leads forwarded</li>
+          </ul>
+          <a class="btn btn-ghost btn-arrow" href="#claim">Claim listing</a>
+        </div>
+
+        <div class="tier popular">
+          <span class="tier-tag">Most popular</span>
+          <div class="tier-name">Featured</div>
+          <div class="tier-sub">Top-3 placement on your category</div>
+          <div class="tier-price">₹3,499<span class="small">/ month</span></div>
+          <ul class="tier-features">
+            <li class="tier-feature">Top-3 "Featured" badge on category</li>
+            <li class="tier-feature">Priority on search results</li>
+            <li class="tier-feature">3 in-article placements/month</li>
+            <li class="tier-feature">Click-to-call & WhatsApp button</li>
+            <li class="tier-feature">Monthly performance report</li>
+          </ul>
+          <a class="btn btn-accent btn-arrow" href="#claim">Get Featured</a>
+        </div>
+
+        <div class="tier">
+          <div class="tier-name">Lead Engine</div>
+          <div class="tier-sub">For agencies, designers, consultants</div>
+          <div class="tier-price">₹4,999<span class="small">+ ₹/lead</span></div>
+          <ul class="tier-features">
+            <li class="tier-feature">Everything in Featured</li>
+            <li class="tier-feature">Exclusive lead-gen forms</li>
+            <li class="tier-feature">Verified leads, your inbox</li>
+            <li class="tier-feature">Pay-per-lead pricing</li>
+            <li class="tier-feature">Replace any lead within 48h</li>
+          </ul>
+          <a class="btn btn-primary btn-arrow" href="#leads">Buy leads</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LEAD GEN -->
+  <section class="leadgen-block" id="leads">
+    <div class="container-wide">
+      <div class="section-head" style="padding-top: 0">
+        <div class="left">
+          <div class="eyebrow">§ Lead Generation</div>
+          <h2>Pay only when a real <em>customer</em> reaches you.</h2>
+        </div>
+      </div>
+
+      <div class="leadgen-grid">
+        <div>
+          <p style="font-family: 'Newsreader', serif; font-size: 19px; line-height: 1.55; color: var(--ink-2); margin-bottom: 24px; text-wrap: pretty;">When someone fills our "Get 3 quotes" form for your category — and we verify them by phone — we send the lead to you and two other vetted businesses. You only pay when we forward a verified lead. No traffic, no fees.</p>
+
+          <div style="display: flex; gap: 16px; margin-bottom: 32px; flex-wrap: wrap">
+            <div class="tag tag-filled">Verified by phone</div>
+            <div class="tag tag-accent">Exclusive (3 max)</div>
+            <div class="tag">48h replacement</div>
+          </div>
+
+          <table class="lead-table">
+            <thead>
+              <tr><th>Category</th><th style="text-align:right">Price per lead</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Digital marketing agency</td><td class="price">₹1,500</td></tr>
+              <tr><td>Web developer / SEO</td><td class="price">₹1,200</td></tr>
+              <tr><td>Interior designer</td><td class="price">₹2,000</td></tr>
+              <tr><td>Architect</td><td class="price">₹2,500</td></tr>
+              <tr><td>Tax consultant / CA</td><td class="price">₹800</td></tr>
+              <tr><td>Wedding photographer</td><td class="price">₹1,000</td></tr>
+              <tr><td>Personal trainer</td><td class="price">₹500</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="claim-form">
+          <div class="eyebrow" style="margin-bottom: 20px">Apply to receive leads</div>
+          <div class="field">
+            <label>Business name</label>
+            <input type="text" placeholder="e.g. Pixel & Co. Studio">
+          </div>
+          <div class="field">
+            <label>Category</label>
+            <select>
+              <option>Digital marketing agency</option>
+              <option>Web developer / SEO</option>
+              <option>Interior designer</option>
+              <option>Architect</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Service area</label>
+            <input type="text" placeholder="Ahmedabad, Gandhinagar">
+          </div>
+          <div class="field">
+            <label>Monthly lead budget</label>
+            <select>
+              <option>₹5,000 – ₹15,000</option>
+              <option>₹15,000 – ₹50,000</option>
+              <option>₹50,000+</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Phone</label>
+            <input type="tel" placeholder="+91 ##### #####">
+          </div>
+          <button class="btn btn-accent btn-arrow" style="width: 100%; justify-content: center" onclick="event.preventDefault(); this.parentElement.innerHTML='<div style=&quot;padding: 40px 0; text-align: center;&quot;><div style=&quot;font-family: Bricolage Grotesque; font-weight: 800; font-size: 36px; color: var(--accent); letter-spacing: -0.03em;&quot;>Application received.</div><p style=&quot;margin-top: 12px; font-family: Newsreader, serif; font-style: italic; font-size: 18px;&quot;>We&#39;ll review and call within 2 business days.</p></div>'">Apply for leads →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIAL -->
+  <section class="testimonial-strip">
+    <div class="container-wide">
+      <div class="eyebrow" style="margin-bottom: 24px">§ What partners say</div>
+      <blockquote>
+        We made back our first three months of Featured fees in <span class="accent" style="font-style: normal; font-family: 'Bricolage Grotesque'; font-weight: 700">11 days</span>. The leads are real, they're local, and they're already half-sold by the time they call us.”
+      </blockquote>
+      <footer>— Aditi Mehta, Founder · <strong>Studio Pol</strong> (Interior Designers, Bodakdev)</footer>
+    </div>
+  </section>
+
+  <!-- CLAIM -->
+  <section class="claim-section" id="claim">
+    <div class="container-wide">
+      <div class="section-head" style="padding-top: 0">
+        <div class="left">
+          <div class="eyebrow">§ Claim Your Listing</div>
+          <h2>Already on the site? <em>Claim it free.</em></h2>
+        </div>
+      </div>
+
+      <div class="claim-grid">
+        <div class="steps">
+          <div class="step">
+            <div class="num">01</div>
+            <div>
+              <h4>Find your business</h4>
+              <p>Search for your business name. If we've listed you, you'll see a "Claim this listing" button on your page.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="num">02</div>
+            <div>
+              <h4>Verify it's yours</h4>
+              <p>We'll call the listed phone number, or ask for a GST/email verification. Takes about 5 minutes.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="num">03</div>
+            <div>
+              <h4>Manage your listing</h4>
+              <p>Update hours, upload photos, respond to reviews, and see how many people clicked through to call you.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="num">04</div>
+            <div>
+              <h4>Upgrade if you want</h4>
+              <p>Featured placement, lead-gen — entirely up to you. The basic listing stays free.</p>
+            </div>
+          </div>
+        </div>
+
+        <form class="claim-form" onsubmit="event.preventDefault(); this.innerHTML='<div style=&quot;padding: 40px 0; text-align: center;&quot;><div style=&quot;font-family: Bricolage Grotesque; font-weight: 800; font-size: 40px; color: var(--accent); letter-spacing: -0.03em;&quot;>Got it.</div><p style=&quot;margin-top: 12px; font-family: Newsreader, serif; font-style: italic; font-size: 18px;&quot;>We&#39;ll verify and email you within 24 hours.</p></div>';">
+          <div class="eyebrow" style="margin-bottom: 20px">Start your claim</div>
+          <div class="field">
+            <label>Business name</label>
+            <input type="text" placeholder="As it appears on our site" required>
+          </div>
+          <div class="field">
+            <label>Your role</label>
+            <select required>
+              <option value="">Select…</option>
+              <option>Owner</option>
+              <option>Manager</option>
+              <option>Marketing</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Email (must match domain)</label>
+            <input type="email" placeholder="you@yourbusiness.com" required>
+          </div>
+          <div class="field">
+            <label>Phone</label>
+            <input type="tel" placeholder="+91 ##### #####" required>
+          </div>
+          <div class="field">
+            <label>Anything to tell us?</label>
+            <textarea placeholder="Optional — corrections to your listing, etc."></textarea>
+          </div>
+          <button class="btn btn-accent btn-arrow" style="width: 100%; justify-content: center">Submit claim →</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq-section">
+    <div class="container-wide">
+      <div class="section-head" style="padding-top: 0">
+        <div class="left">
+          <div class="eyebrow">§ FAQ</div>
+          <h2>Things you'll <em>want to know.</em></h2>
+        </div>
+      </div>
+
+      <div class="faq-grid">
+        <div class="faq-item">
+          <h4>Can I pay to be #1 on a category?</h4>
+          <p>No. Rankings are editorial and we won't sell them. Featured slots get a clear badge and surface higher within the page, but our top-3 ranking is decided by us, in person.</p>
+        </div>
+        <div class="faq-item">
+          <h4>What happens if my listing gets bad reviews?</h4>
+          <p>We re-evaluate Featured listings every 6 months. If quality drops below our bar, we keep your money for the period paid but won't renew. We'd rather lose a customer than lose reader trust.</p>
+        </div>
+        <div class="faq-item">
+          <h4>How are leads "verified"?</h4>
+          <p>Every lead form requires a phone OTP and we call within 30 minutes to confirm intent and budget. Junk leads or duplicates are replaced free within 48 hours.</p>
+        </div>
+        <div class="faq-item">
+          <h4>Is there an exclusivity?</h4>
+          <p>Lead-gen is exclusive to 3 partners per category. Featured listings have no cap, but we limit Featured slots to 5 per category page so they stay meaningful.</p>
+        </div>
+        <div class="faq-item">
+          <h4>What if I'm a brand-new business not yet listed?</h4>
+          <p>Send us your details on the form above. If you fit our category and meet our quality bar after a visit, we'll add you. We don't list every business — that's the whole point.</p>
+        </div>
+        <div class="faq-item">
+          <h4>What's the contract length?</h4>
+          <p>Monthly. Cancel any time before your renewal date. We don't lock anyone in.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section style="background: var(--ink); color: var(--paper); padding: 96px 0;">
+    <div class="container-wide" style="text-align: center">
+      <div class="eyebrow" style="color: rgba(245,240,230,0.6); margin-bottom: 24px">§ Ready?</div>
+      <h2 style="font-family: 'Bricolage Grotesque'; font-weight: 800; font-size: clamp(48px, 6vw, 88px); letter-spacing: -0.04em; line-height: 0.95; max-width: 1100px; margin: 0 auto 32px; text-wrap: balance">
+        The next 100 readers searching <em style="font-family: 'Newsreader', serif; font-style: italic; font-weight: 400; color: var(--accent)">"best ___ in Ahmedabad"</em> could be reading about you.
+      </h2>
+      <div style="display: flex; gap: 16px; justify-content: center; margin-top: 40px; flex-wrap: wrap">
+        <a href="#rates" class="btn btn-accent btn-arrow">See Featured plans</a>
+        <a href="#leads" class="btn btn-ghost btn-arrow" style="border-color: var(--paper); color: var(--paper)">Buy leads</a>
+        <a href="mailto:hello@ahmedabad.blog" class="btn btn-ghost btn-arrow" style="border-color: var(--paper); color: var(--paper)">Talk to us</a>
+      </div>
+      <p style="margin-top: 32px; font-family: 'Newsreader', serif; font-style: italic; font-size: 16px; opacity: 0.7">No commitment. Cancel any time. We answer email in under 4 hours.</p>
+    </div>
+  </section>
+
+</main>
+
+<div id="footer-mount"></div>
+
+<script src="data.js"></script>
+<script src="partials.js"></script>
+<script>
+  document.getElementById('masthead-mount').innerHTML = window.AHM_PARTIALS.masthead();
+  document.getElementById('footer-mount').innerHTML = window.AHM_PARTIALS.footer();
+</script>
+<script src="tweaks.js"></script>
+</body>
+</html>
