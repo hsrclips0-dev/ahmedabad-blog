@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next'
-import { categories, cafes } from '@/lib/data'
+import { categories, allListings } from '@/lib/data'
 
 const BASE = 'https://ahmedabad.blog'
 
@@ -11,8 +11,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }))
 
-  const listingUrls: MetadataRoute.Sitemap = cafes.map((c) => ({
-    url: `${BASE}/listing/${c.id}`,
+  const listingUrls: MetadataRoute.Sitemap = allListings.map((l) => ({
+    url: `${BASE}/listing/${l.id}`,
     lastModified: new Date(),
     changeFrequency: 'monthly',
     priority: 0.6,

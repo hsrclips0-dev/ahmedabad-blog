@@ -4,7 +4,7 @@ import Link from 'next/link'
 import SearchBlock from '@/components/SearchBlock'
 import LeadForm from '@/components/LeadForm'
 import ListingCard from '@/components/ListingCard'
-import { categories, cafes, events } from '@/lib/data'
+import { categories, cafes, calendarEvents } from '@/lib/data'
 
 export const metadata: Metadata = {
   title: 'ahmedabad.blog — A curated guide to the city',
@@ -212,7 +212,7 @@ export default function HomePage() {
           </div>
 
           <div className="this-month-list">
-            {events.map((ev, i) => (
+            {calendarEvents.map((ev, i) => (
               <div key={i} className="item">
                 <div className="when">
                   {ev.date}

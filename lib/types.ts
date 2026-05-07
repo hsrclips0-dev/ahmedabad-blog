@@ -16,12 +16,13 @@ export interface Listing {
   hours: string
   phone: string
   address: string
-  scores?: {
-    coffee?: number
-    atmosphere?: number
-    service?: number
-    value?: number
-  }
+  categorySlug?: string
+  subtitle?: string
+  body?: string[]
+  quote?: string
+  attribution?: string
+  details?: Record<string, string>
+  scores?: Record<string, number>
 }
 
 export interface Category {

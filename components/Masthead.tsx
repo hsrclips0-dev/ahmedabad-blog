@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { categories, issue } from '@/lib/data'
+import LiveMetaBar from './LiveMetaBar'
 
 export default function Masthead() {
   const pathname = usePathname()
@@ -14,8 +15,7 @@ export default function Masthead() {
       <div className="container-wide">
         <div className="masthead-top">
           <div className="left">
-            <span>Mon · 05 May 2026</span>
-            <span className="muted">28°C, hazy</span>
+            <LiveMetaBar />
           </div>
           <div className="right">
             <Link href="/advertise">Advertise</Link>

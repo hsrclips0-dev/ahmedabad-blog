@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import ListingCard from '@/components/ListingCard'
-import { cafes, categories } from '@/lib/data'
+import { allListings, listingsByCategory, categories, getListingAndCategory } from '@/lib/data'
 import { notFound } from 'next/navigation'
 
 interface Props {
@@ -10,15 +10,17 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  return cafes.map((c) => ({ id: c.id }))
+  return allListings.map((l) => ({ id: l.id }))
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params
-  const listing = cafes.find((c) => c.id === id)
-  if (!listing) return {}
+  const result = getListingAndCategory(id)
+  if (!result) return {}
 
-  const title = `${listing.name} — Best Cafés in Ahmedabad`
+  const { listing, categorySlug } = result
+  const cat = categories.find((c) => c.slug === categorySlug)
+  const title = `${listing.name} — Best ${cat?.name ?? 'Listings'} in Ahmedabad`
   const description = listing.review.slice(0, 160)
 
   return {
@@ -35,14 +37,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
+function formatScoreKey(key: string) {
+  return key.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())
+}
+
 export default async function ListingPage({ params }: Props) {
   const { id } = await params
-  const c = cafes.find((x) => x.id === id)
-  if (!c) notFound()
+  const result = getListingAndCategory(id)
+  if (!result) notFound()
 
-  const others = cafes.filter((x) => x.id !== c.id).slice(0, 3)
-  const related = cafes.filter((x) => x.id !== c.id).slice(0, 3)
-  const cat = categories.find((x) => x.slug === 'cafes')!
+  const { listing: c, categorySlug } = result
+  const cat = categories.find((x) => x.slug === categorySlug)!
+  const categoryListings = listingsByCategory[categorySlug] ?? []
+  const others = categoryListings.filter((x) => x.id !== c.id).slice(0, 3)
+  const related = categoryListings.filter((x) => x.id !== c.id).slice(0, 3)
 
   const pullIdx = c.review.indexOf(c.pull)
 
@@ -85,14 +93,14 @@ export default async function ListingPage({ params }: Props) {
             <div className="detail-breadcrumbs">
               <Link href="/">The Index</Link>{' '}
               <span style={{ opacity: 0.5 }}>/</span>{' '}
-              <Link href="/category/cafes">Best Cafés</Link>{' '}
+              <Link href={`/category/${categorySlug}`}>Best {cat.name}</Link>{' '}
               <span style={{ opacity: 0.5 }}>/</span>{' '}
               <span>{c.name}</span>
             </div>
 
             {/* Meta badges */}
             <div className="detail-meta-top">
-              <span className="eyebrow">★ Ranked #{parseInt(c.rank)} of {cafes.length}</span>
+              <span className="eyebrow">★ Ranked #{parseInt(c.rank)} of {categoryListings.length}</span>
               {c.verified && <span className="badge-verified">Verified by us</span>}
               {c.pick && <span className="badge-pick">Editor&apos;s pick</span>}
               {c.featured && <span className="badge-featured">Featured Partner</span>}
@@ -100,7 +108,7 @@ export default async function ListingPage({ params }: Props) {
 
             <h1 className="detail-title">{c.name}</h1>
             <p className="detail-subtitle">
-              — Specialty café, {c.neighborhood}
+              — {c.subtitle ?? cat.name}, {c.neighborhood}
             </p>
 
             {/* Meta row */}
@@ -108,7 +116,7 @@ export default async function ListingPage({ params }: Props) {
               <div className="stat-block">
                 <span className="l">Rating</span>
                 <span className="v">
-                  {c.rating} ★ · {c.reviews} reviews
+                  {c.rating} ★ · {c.reviews.toLocaleString()} reviews
                 </span>
               </div>
               <div className="stat-block">
@@ -127,8 +135,8 @@ export default async function ListingPage({ params }: Props) {
                 <span className="v">Apr 2026</span>
               </div>
               <div className="stat-block">
-                <span className="l">Times visited</span>
-                <span className="v">3</span>
+                <span className="l">Category</span>
+                <span className="v">{cat.name}</span>
               </div>
             </div>
 
@@ -161,7 +169,7 @@ export default async function ListingPage({ params }: Props) {
             <div className="detail-body">
               <div className="review-body">
                 <div className="eyebrow" style={{ marginBottom: '24px' }}>
-                  § The Review · 8 min read
+                  § The Review · 5 min read
                 </div>
 
                 <p>
@@ -176,37 +184,13 @@ export default async function ListingPage({ params }: Props) {
                   )}
                 </p>
 
-                <p>
-                  Coffee in Ahmedabad has been a slow-build story. For most of the 2010s, the
-                  city&apos;s idea of a café was a milky cappuccino at CCD and a pastry that had
-                  been sitting under a glass dome since the previous Tuesday. Then came the Bombay
-                  imports, and slowly, a few homegrown shops that took the work seriously. Amalgam
-                  is the most serious of them.
-                </p>
+                {c.body?.map((para, i) => (
+                  <p key={i}>{para}</p>
+                ))}
 
-                <div className="pull-quote">
-                  &ldquo;He pulls a 1:2 ratio at 92°C, talks about extraction yields without
-                  sounding insufferable, and the result is in the cup.&rdquo;
-                </div>
-
-                <p>
-                  The owner, Karan, spent eight years at a hedge fund in Lower Parel before
-                  deciding he&apos;d rather own a roastery. He sources from a single estate in
-                  Coorg and a couple of small farms outside Chikmagalur, roasts on a small Probat
-                  in the back, and — crucially — pays attention to the espresso machine. Most cafés
-                  in this city run their groupheads filthy. His are immaculate.
-                </p>
-
-                <p>
-                  The food menu is short by design. The croissant is from Blackforest down the road
-                  (he doesn&apos;t pretend to bake). The eggs are good. The ragi pancakes are
-                  surprisingly excellent. Don&apos;t order the salads.
-                </p>
-
-                <p>
-                  Sit upstairs. There&apos;s a window seat that looks out onto the courtyard, and
-                  it&apos;s the best chair in any café in this city.
-                </p>
+                {c.quote && (
+                  <div className="pull-quote">&ldquo;{c.quote}&rdquo;</div>
+                )}
 
                 <p
                   style={{
@@ -219,57 +203,57 @@ export default async function ListingPage({ params }: Props) {
                     borderTop: '1px solid var(--rule)',
                   }}
                 >
-                  — Riya Shah · Visited Mar 2026 &amp; Apr 2026
+                  {c.attribution ?? '— The editors · ahmedabad.blog'}
                 </p>
               </div>
 
               {/* Sidecar */}
               <aside className="sidecar">
                 {/* Score card */}
-                <div className="sidecar-card">
-                  <h4>Our Score</h4>
-                  <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginBottom: '4px' }}>
-                    <span
+                {c.scores && Object.keys(c.scores).length > 0 && (
+                  <div className="sidecar-card">
+                    <h4>Our Score</h4>
+                    <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginBottom: '4px' }}>
+                      <span
+                        style={{
+                          fontFamily: 'var(--font-bricolage)',
+                          fontWeight: 800,
+                          fontSize: '64px',
+                          letterSpacing: '-0.045em',
+                          lineHeight: 1,
+                          color: 'var(--accent)',
+                        }}
+                      >
+                        {c.rating}
+                      </span>
+                      <span
+                        style={{
+                          fontFamily: 'var(--font-newsreader)',
+                          fontStyle: 'italic',
+                          fontSize: '18px',
+                          color: 'var(--ink-2)',
+                        }}
+                      >
+                        / 5.0
+                      </span>
+                    </div>
+                    <div
                       style={{
-                        fontFamily: 'var(--font-bricolage)',
-                        fontWeight: 800,
-                        fontSize: '64px',
-                        letterSpacing: '-0.045em',
-                        lineHeight: 1,
-                        color: 'var(--accent)',
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: '10px',
+                        letterSpacing: '0.16em',
+                        textTransform: 'uppercase',
+                        color: 'var(--muted)',
+                        marginBottom: '20px',
                       }}
                     >
-                      {c.rating}
-                    </span>
-                    <span
-                      style={{
-                        fontFamily: 'var(--font-newsreader)',
-                        fontStyle: 'italic',
-                        fontSize: '18px',
-                        color: 'var(--ink-2)',
-                      }}
-                    >
-                      / 5.0
-                    </span>
-                  </div>
-                  <div
-                    style={{
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: '10px',
-                      letterSpacing: '0.16em',
-                      textTransform: 'uppercase',
-                      color: 'var(--muted)',
-                      marginBottom: '20px',
-                    }}
-                  >
-                    Editor&apos;s score
-                  </div>
+                      Editor&apos;s score
+                    </div>
 
-                  {c.scores &&
-                    Object.entries(c.scores).map(([key, val]) => (
+                    {Object.entries(c.scores).map(([key, val]) => (
                       <div key={key} className="score-bar">
                         <div className="score-top">
-                          <span>{key.charAt(0).toUpperCase() + key.slice(1)}</span>
+                          <span>{formatScoreKey(key)}</span>
                           <span className="v">{val}</span>
                         </div>
                         <div className="track">
@@ -277,18 +261,15 @@ export default async function ListingPage({ params }: Props) {
                         </div>
                       </div>
                     ))}
-                </div>
+                  </div>
+                )}
 
                 {/* Info card */}
                 <div className="sidecar-card">
                   <h4>The Details</h4>
                   <div className="info-row">
-                    <span className="k">Status</span>
-                    <span className="v open">● Open · until 22:00</span>
-                  </div>
-                  <div className="info-row">
                     <span className="k">Hours</span>
-                    <span className="v">{c.hours}, daily</span>
+                    <span className="v">{c.hours}</span>
                   </div>
                   <div className="info-row">
                     <span className="k">Address</span>
@@ -302,22 +283,16 @@ export default async function ListingPage({ params }: Props) {
                     <span className="k">Price</span>
                     <span className="v">
                       {'₹'.repeat(c.price)}
-                      <span style={{ opacity: 0.3 }}>{'₹'.repeat(3 - c.price)}</span> · ₹250 for
-                      two
+                      <span style={{ opacity: 0.3 }}>{'₹'.repeat(3 - c.price)}</span>
                     </span>
                   </div>
-                  <div className="info-row">
-                    <span className="k">Wi-Fi</span>
-                    <span className="v">Yes — fast</span>
-                  </div>
-                  <div className="info-row">
-                    <span className="k">Seating</span>
-                    <span className="v">42 inside · 12 courtyard</span>
-                  </div>
-                  <div className="info-row">
-                    <span className="k">Parking</span>
-                    <span className="v">2-wheeler only</span>
-                  </div>
+                  {c.details &&
+                    Object.entries(c.details).map(([key, val]) => (
+                      <div key={key} className="info-row">
+                        <span className="k">{key}</span>
+                        <span className="v">{val}</span>
+                      </div>
+                    ))}
                 </div>
 
                 {/* CTAs */}
@@ -359,27 +334,29 @@ export default async function ListingPage({ params }: Props) {
         </article>
 
         {/* ── RELATED ── */}
-        <section className="related-section">
-          <div className="container-wide">
-            <div className="section-head" style={{ paddingTop: 0 }}>
-              <div className="left">
-                <div className="eyebrow">§ Continue reading</div>
-                <h2>
-                  If you liked this, <em>try these.</em>
-                </h2>
+        {related.length > 0 && (
+          <section className="related-section">
+            <div className="container-wide">
+              <div className="section-head" style={{ paddingTop: 0 }}>
+                <div className="left">
+                  <div className="eyebrow">§ Continue reading</div>
+                  <h2>
+                    If you liked this, <em>try these.</em>
+                  </h2>
+                </div>
+                <div className="right">
+                  <Link href={`/category/${categorySlug}`} className="btn btn-ghost btn-arrow">
+                    All {categoryListings.length} {cat.name.toLowerCase()}
+                  </Link>
+                </div>
               </div>
-              <div className="right">
-                <Link href="/category/cafes" className="btn btn-ghost btn-arrow">
-                  All {cafes.length} cafés
-                </Link>
-              </div>
-            </div>
 
-            {related.map((r) => (
-              <ListingCard key={r.id} listing={r} eyebrow="Best Cafés" truncateReview={180} />
-            ))}
-          </div>
-        </section>
+              {related.map((r) => (
+                <ListingCard key={r.id} listing={r} eyebrow={`Best ${cat.name}`} truncateReview={180} />
+              ))}
+            </div>
+          </section>
+        )}
       </main>
     </>
   )
