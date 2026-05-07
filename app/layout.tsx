@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Bricolage_Grotesque, Newsreader, JetBrains_Mono, Hind_Vadodara } from 'next/font/google'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import './globals.css'
 
 const bricolage = Bricolage_Grotesque({
@@ -86,6 +87,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         {children}
+        <SpeedInsights />
       </body>
     </html>
   )
