@@ -2,7 +2,11 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import ListingCard from '@/components/ListingCard'
 import { categories, listingsByCategory, getCategoryMeta } from '@/lib/data'
+import { createSupabaseServer } from '@/lib/supabase-server'
 import { notFound } from 'next/navigation'
+import type { Listing } from '@/lib/types'
+
+export const revalidate = 60
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -38,7 +42,44 @@ export default async function CategoryPage({ params }: Props) {
   const cat = categories.find((c) => c.slug === slug)
   if (!cat) notFound()
 
-  const listings = listingsByCategory[slug] || listingsByCategory.cafes
+  const supabase = await createSupabaseServer()
+  const { data: dbListings } = await supabase
+    .from('listings')
+    .select('*')
+    .eq('category_slug', slug)
+    .eq('published', true)
+    .order('rank_order')
+
+  const staticListings = listingsByCategory[slug] || []
+
+  const dbMapped: Listing[] = (dbListings ?? []).map((l) => ({
+    id: l.id,
+    rank: String(l.rank_order).padStart(2, '0'),
+    name: l.name,
+    neighborhood: l.neighborhood,
+    featured: l.featured,
+    verified: l.verified,
+    pick: l.pick,
+    rating: l.rating,
+    reviews: l.review_count,
+    price: l.price,
+    tags: Array.isArray(l.tags) ? l.tags : [],
+    img: l.img || '',
+    review: l.review,
+    pull: l.pull || '',
+    hours: l.hours || '',
+    phone: l.phone || '',
+    address: l.address || '',
+    categorySlug: slug,
+    subtitle: l.subtitle,
+    body: Array.isArray(l.body_paras) ? l.body_paras : [],
+    quote: l.pull_quote,
+    attribution: l.attribution,
+    scores: l.scores as Record<string, number>,
+    details: l.details as Record<string, string>,
+  }))
+
+  const listings = [...staticListings, ...dbMapped]
   const topListings = listings.slice(0, 3)
   const rest = listings.slice(3)
   const dek = getCategoryMeta(slug)

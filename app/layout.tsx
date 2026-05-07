@@ -1,9 +1,6 @@
 import type { Metadata } from 'next'
 import { Bricolage_Grotesque, Newsreader, JetBrains_Mono, Hind_Vadodara } from 'next/font/google'
 import './globals.css'
-import Masthead from '@/components/Masthead'
-import Footer from '@/components/Footer'
-import ThemeSwitcher from '@/components/ThemeSwitcher'
 
 const bricolage = Bricolage_Grotesque({
   subsets: ['latin'],
@@ -88,10 +85,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
-        <Masthead />
         {children}
-        <Footer />
-        <ThemeSwitcher />
       </body>
     </html>
   )

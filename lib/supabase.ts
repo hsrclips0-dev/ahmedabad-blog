@@ -17,6 +17,124 @@ export function createAdminClient() {
 export type Database = {
   public: {
     Tables: {
+      posts: {
+        Row: {
+          id: string
+          created_at: string
+          updated_at: string
+          slug: string
+          title: string
+          subtitle: string | null
+          author: string
+          category_slug: string | null
+          body: string
+          excerpt: string | null
+          cover_img: string | null
+          tags: string[] | null
+          published: boolean
+          published_at: string | null
+        }
+        Insert: {
+          slug: string
+          title: string
+          subtitle?: string | null
+          author?: string
+          category_slug?: string | null
+          body: string
+          excerpt?: string | null
+          cover_img?: string | null
+          tags?: string[] | null
+          published?: boolean
+          published_at?: string | null
+        }
+      }
+      listings: {
+        Row: {
+          id: string
+          created_at: string
+          updated_at: string
+          rank_order: number
+          name: string
+          category_slug: string
+          neighborhood: string
+          subtitle: string | null
+          featured: boolean
+          verified: boolean
+          pick: boolean
+          rating: number
+          review_count: number
+          price: number
+          tags: string[] | null
+          img: string | null
+          review: string
+          pull: string | null
+          hours: string | null
+          phone: string | null
+          address: string | null
+          body_paras: string[] | null
+          pull_quote: string | null
+          attribution: string | null
+          scores: Record<string, number> | null
+          details: Record<string, string> | null
+          published: boolean
+        }
+        Insert: {
+          id?: string
+          rank_order?: number
+          name: string
+          category_slug: string
+          neighborhood: string
+          subtitle?: string | null
+          featured?: boolean
+          verified?: boolean
+          pick?: boolean
+          rating?: number
+          review_count?: number
+          price?: number
+          tags?: string[] | null
+          img?: string | null
+          review: string
+          pull?: string | null
+          hours?: string | null
+          phone?: string | null
+          address?: string | null
+          body_paras?: string[] | null
+          pull_quote?: string | null
+          attribution?: string | null
+          scores?: Record<string, number> | null
+          details?: Record<string, string> | null
+          published?: boolean
+        }
+      }
+      listicles: {
+        Row: {
+          id: string
+          created_at: string
+          updated_at: string
+          slug: string
+          title: string
+          subtitle: string | null
+          author: string
+          category_slug: string | null
+          intro: string | null
+          cover_img: string | null
+          items: Array<{ rank: number; title: string; body: string; img: string }>
+          published: boolean
+          published_at: string | null
+        }
+        Insert: {
+          slug: string
+          title: string
+          subtitle?: string | null
+          author?: string
+          category_slug?: string | null
+          intro?: string | null
+          cover_img?: string | null
+          items?: Array<{ rank: number; title: string; body: string; img: string }>
+          published?: boolean
+          published_at?: string | null
+        }
+      }
       leads: {
         Row: {
           id: string
